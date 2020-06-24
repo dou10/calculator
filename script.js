@@ -21,6 +21,7 @@ class Calculator{
     }
 
     delete(){
+        this.currentOperand = this.currentOperand.toString().slice(0,-1);
 
     }
 
@@ -40,12 +41,53 @@ class Calculator{
     }
 
     compute(){
+        let computation;
+        const prev = parseFloat(this.previousOperand);
+        const curr = parseFloat(this.currentOperand);
+        if(isNaN(prev) || isNaN(curr)) return ;
+
+        if(curr === 0 && this.operation === '/'){
+            alert('Cannot divide by zero');
+            return ;
+        }
+
+        switch(this.operation){
+            case '+': 
+                computation = prev + curr;
+                break;
+            
+            case '-': 
+                computation = prev - curr;
+                break;
+
+            case '*': 
+                computation = prev * curr;
+                break;
+
+            case '/': 
+                computation = prev / curr;
+                break;
+
+            default:
+                return;
+        }
+
+        this.currentOperand = computation;
+        this.operation = undefined;
+        this.previousOperand = ''
 
     }
 
     updateDisplay(){
         this.currentOperandTextElement.innerText = this.currentOperand;
-        this.previousOperandTextElement.innerText = this.previousOperand;
+
+        if(this.operation != null){
+            this.previousOperandTextElement.innerText = `${this.previousOperand}${this.operation}`;
+        }
+
+        else{
+            this.previousOperandTextElement.innerText = '';
+        }
 
     }
 
@@ -58,11 +100,26 @@ numberButtons.forEach(button => {
         calc.appendNumber(button.innerText);
         calc.updateDisplay();
     })
-})
+});
 
 operationsButtons.forEach(button => {
     button.addEventListener('click', () => {
         calc.chooseOperation(button.innerText);
         calc.updateDisplay();
     })
-})
+});
+
+equalsButton.addEventListener('click', () => {
+        calc.compute();
+        calc.updateDisplay();
+});
+
+clearButton.addEventListener('click', () => {
+        calc.clear();
+        calc.updateDisplay();
+});
+
+deleteButton.addEventListener('click', () => {
+    calc.delete();
+    calc.updateDisplay();
+});
