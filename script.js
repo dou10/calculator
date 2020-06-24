@@ -5,6 +5,7 @@ const deleteButton = document.querySelector('[data-delete]');
 const clearButton = document.querySelector('[data-clear]');
 const previousOperandTextElement = document.querySelector('[data-previous-operand]');
 const currentOperandTextElement = document.querySelector('[data-current-operand]');
+const signChangeButton = document.querySelector('[data-sign-change]');
 
 
 class Calculator{
@@ -78,6 +79,12 @@ class Calculator{
 
     }
 
+    changeSign(){
+        let changeResult;
+        const curr = parseFloat(this.currentOperand);
+        this.currentOperand = curr * -1;
+    }
+
     updateDisplay(){
         this.currentOperandTextElement.innerText = this.currentOperand;
 
@@ -123,3 +130,8 @@ deleteButton.addEventListener('click', () => {
     calc.delete();
     calc.updateDisplay();
 });
+
+signChangeButton.addEventListener('click', () => {
+    calc.changeSign();
+    calc.updateDisplay();
+})
